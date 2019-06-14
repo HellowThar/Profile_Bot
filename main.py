@@ -1,19 +1,18 @@
 import discord
 from discord.ext import commands
-import asyncio
-from itertools import cycle
+
 
 import config
 import models
 
+
 TOKEN = config.TOKEN
 
 
-client = discord.Client()
-bot = commands.Bot(command_prefix='.')
+client = commands.Bot(command_prefix='.')
 
-@bot.command(pass_context=True, name='createprofile')
-async def create_profile(ctx, profile):
+@client.command(aliases=['createprofile', 'profilecreate'])
+async def create_profile(ctx, *, profile):
     author = ctx.message.author
     models.Profile.create(
         username = author,
@@ -21,26 +20,30 @@ async def create_profile(ctx, profile):
     )
     await ctx.send('Your profile has been created')
 
-@bot.command(pass_context=True)
-async def showprofile(ctx):
+@client.command(aliases=['editprofile', 'profileedit'])
+async def edit_profile(ctx, *, profile):
     author = ctx.message.author
+    query = models.Profile.update(profile=profile).where(models.Profile.username == author)
+    query.execute()
+    await ctx.send('Your profile has been edited')
 
-    embed = discord.Embed(
-        title = 'Title',
-        description = 'This is a description',
-        color = discord.Color.blue()
-    )
+@client.command(aliases=['deleteprofile', 'profiledelete'])
+async def delete_profile(ctx):
+    author = ctx.message.author
+    query = models.Profile.select().where(models.Profile.username == author).get()
+    query.delete_instance()
+    await ctx.send('Your profile has been deleted')
 
-    embed.set_footer(text='This is a footer.')
-    #embed.set_image(url='')
-    #embed.set_thumbnail(url='')
-    embed.set_author(name='Author Name', icon_url='')
+@client.command(aliases=['showprofile', 'profiledshow'])
+async def show_profile(ctx, *, user):
+    profile = models.Profile.select().where(models.Profile.username == user).get()
+    embed = discord.Embed(color = discord.Color.blue())
     embed.add_field(
-        name='Field Name',
-        value='Description',
+        name=f"{user}'s profile",
+        value=profile.profile,
         inline='True'
     )
-    await client.send()
+    await ctx.send(embed=embed)
 
 @client.event
 async def on_ready():
@@ -49,4 +52,6 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-client.run(TOKEN)
+if __name__ == '__main__':
+    models.initialize()
+    client.run(TOKEN)
