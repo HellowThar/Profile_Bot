@@ -34,7 +34,7 @@ async def delete_profile(ctx):
     query.delete_instance()
     await ctx.send('Your profile has been deleted')
 
-@client.command(aliases=['showprofile', 'profiledshow'])
+@client.command(aliases=['showprofile', 'profileshow'])
 async def show_profile(ctx, *, user):
     profile = models.Profile.select().where(models.Profile.username == user).get()
     embed = discord.Embed(color = discord.Color.blue())

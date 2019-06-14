@@ -9,7 +9,7 @@ class BaseModel(Model):
 
 class Profile(BaseModel):
     username = CharField(unique=True)
-    profile = TextField()
+    profile = CharField(max_length=5000)
 
 def initialize():
     DATABASE.connect()
