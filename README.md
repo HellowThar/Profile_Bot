@@ -13,3 +13,7 @@
   * Type either command followed by a space, and the users name that you want to view
   * Use UserName#ID format
   * Currently "@UserName" format does not work
+
+## Using Pipenv as a package manager
+## Currently no error handling
+## Change config.py.example to config.py and replace TOKEN value
