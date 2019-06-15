@@ -1,22 +1,20 @@
 import discord
 from discord.ext import commands
+import aiosqlite
 
 import config
 import models
 
 
 TOKEN = config.TOKEN
-
+DB = "profile.sqlite"
 
 client = commands.Bot(command_prefix='.')
 
 @client.command(aliases=['createprofile', 'profilecreate'])
 async def create_profile(ctx, *, profile):
-    author = ctx.message.author
-    models.Profile.create(
-        username = author,
-        profile = profile
-    )
+    profile += ctx.message.author
+    await models.create(profile)
     await ctx.send('Your profile has been created')
 
 @client.command(aliases=['editprofile', 'profileedit'])
@@ -52,5 +50,5 @@ async def on_ready():
     print('------')
 
 if __name__ == '__main__':
-    models.initialize()
+    models.initialize("profile.sqlite")
     client.run(TOKEN)

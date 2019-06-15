@@ -7,8 +7,7 @@ verify_ssl = true
 
 [packages]
 discord-py = "*"
-peewee = "*"
-asyncio = "*"
+aiosqlite = "*"
 
 [requires]
 python_version = "3.7"

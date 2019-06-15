@@ -1,17 +1,19 @@
-from peewee import *
+import sqlite3
+from sqlite3 import Error
+import aiosqlite
 
-DATABASE = SqliteDatabase('profiles.sqlite')
+def initialize(db):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    c.execute("""CREATE TABLE IF NOT EXISTS profile (
+                                        id integer PRIMARY KEY,
+                                        username text NOT NULL UNIQUE,
+                                        profile text
+                                        );""")
+    c.close()
 
-class BaseModel(Model):
-
-    class Meta:
-        database = DATABASE
-
-class Profile(BaseModel):
-    username = CharField(unique=True)
-    profile = CharField(max_length=5000)
-
-def initialize():
-    DATABASE.connect()
-    DATABASE.create_tables([Profile], safe=True)
-    DATABASE.close()
+async def create(profile):
+    async with aiosqlite.connect("profile.sqlite") as db:
+        await db.execute("""INSERT INTO profile(username,profile)
+                        VALUES(?,?)""", profile)
+        await db.commit()
