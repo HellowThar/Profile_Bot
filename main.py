@@ -13,27 +13,26 @@ client = commands.Bot(command_prefix='.')
 
 @client.command(aliases=['createprofile', 'profilecreate'])
 async def create_profile(ctx, *, profile):
-    profile += ctx.message.author
-    await models.create(profile)
+    full_profile = (str(ctx.message.author), profile)
+    await models.create(full_profile)
     await ctx.send('Your profile has been created')
 
 @client.command(aliases=['editprofile', 'profileedit'])
 async def edit_profile(ctx, *, profile):
-    author = ctx.message.author
-    query = models.Profile.update(profile=profile).where(models.Profile.username == author)
-    query.execute()
+    full_profile = (profile, str(ctx.message.author))
+    await models.edit(full_profile)
     await ctx.send('Your profile has been edited')
 
 @client.command(aliases=['deleteprofile', 'profiledelete'])
 async def delete_profile(ctx):
-    author = ctx.message.author
-    query = models.Profile.select().where(models.Profile.username == author).get()
-    query.delete_instance()
+    author = (str(ctx.message.author),)
+    await models.delete(author)
     await ctx.send('Your profile has been deleted')
 
 @client.command(aliases=['showprofile', 'profileshow'])
 async def show_profile(ctx, *, user):
-    profile = models.Profile.select().where(models.Profile.username == user).get()
+    author = (str(ctx.message.author),)
+    await models.show(author)
     embed = discord.Embed(color = discord.Color.blue())
     embed.add_field(
         name=f"{user}'s profile",
