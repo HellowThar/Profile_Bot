@@ -13,23 +13,23 @@ def initialize(db):
     c.close()
 
 async def create(full_profile):
-    async with aiosqlite.connect("profile.sqlite") as db:
+    async with aiosqlite.connect("profiles.sqlite") as db:
         await db.execute("""INSERT INTO profile(username,profile)
                         VALUES(?,?)""", full_profile)
         await db.commit()
 
 async def edit(full_profile):
-    async with aiosqlite.connect("profile.sqlite") as db:
+    async with aiosqlite.connect("profiles.sqlite") as db:
         await db.execute("""UPDATE profile SET profile=? WHERE username=?""", full_profile)
         await db.commit()
 
 async def delete(author):
-    async with aiosqlite.connect("profile.sqlite") as db:
+    async with aiosqlite.connect("profiles.sqlite") as db:
         await db.execute("""DELETE FROM profile WHERE username=?""", author)
         await db.commit()
 
 async def show(user):
-    async with aiosqlite.connect("profile.sqlite") as db:
+    async with aiosqlite.connect("profiles.sqlite") as db:
         async with db.execute("""SELECT profile FROM profile WHERE username=?""", user) as cursor:
             async for row in cursor:
                 (profile, ) = row

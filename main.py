@@ -48,5 +48,5 @@ async def on_ready():
     print('------')
 
 if __name__ == '__main__':
-    models.initialize("profile.sqlite")
+    models.initialize("profiles.sqlite")
     client.run(TOKEN)
