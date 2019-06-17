@@ -23,13 +23,14 @@ async def edit(full_profile):
         await db.execute("""UPDATE profile SET profile=? WHERE username=?""", full_profile)
         await db.commit()
 
-async def delete(user):
+async def delete(author):
     async with aiosqlite.connect("profile.sqlite") as db:
-        await db.execute("""DELETE FROM profile WHERE username=?""", profile)
+        await db.execute("""DELETE FROM profile WHERE username=?""", author)
         await db.commit()
 
 async def show(user):
     async with aiosqlite.connect("profile.sqlite") as db:
-        async with db.execute("""SELECT * FROM profile WHERE username=?""", user) as cursor:
-            async for profile in cursor:
-                await profile
+        async with db.execute("""SELECT profile FROM profile WHERE username=?""", user) as cursor:
+            async for row in cursor:
+                (profile, ) = row
+                return profile

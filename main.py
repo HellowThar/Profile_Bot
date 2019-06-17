@@ -7,7 +7,6 @@ import models
 
 
 TOKEN = config.TOKEN
-DB = "profile.sqlite"
 
 client = commands.Bot(command_prefix='.')
 
@@ -31,12 +30,12 @@ async def delete_profile(ctx):
 
 @client.command(aliases=['showprofile', 'profileshow'])
 async def show_profile(ctx, *, user):
-    author = (str(ctx.message.author),)
-    await models.show(author)
+    get_user = (user,)
+    profile = await models.show(get_user)
     embed = discord.Embed(color = discord.Color.blue())
     embed.add_field(
         name=f"{user}'s profile",
-        value=profile.profile,
+        value=profile,
         inline='True'
     )
     await ctx.send(embed=embed)
