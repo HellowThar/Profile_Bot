@@ -40,6 +40,27 @@ async def show_profile(ctx, *, user):
     )
     await ctx.send(embed=embed)
 
+
+@client.command(aliases=['profilehelp'])
+async def show_profile(ctx):
+    embed = discord.Embed(color = discord.Color.blue())
+    embed.add_field(
+        name="Functions",
+        value=""".createprofile / .profilecreate profile
+        example: .profilecreate This is a short blurb about my character
+        
+        .editprofile / .profileedit profile
+        example: .profileedit This is a short blurby blurb about my character
+        
+        .deleteprofile / .profiledelete
+        example: .profiledelete
+        
+        .showprofile / .profileshow user#id
+        example: .profileshow Adam#1234""",
+        inline='True'
+    )
+    await ctx.send(embed=embed)    
+    
 @client.event
 async def on_ready():
     print('Logged in as')
