@@ -6,7 +6,7 @@
 * **.editprofile / .profileedit**
   * Type either command followed by a space, and your full updated profile
   * Your entire profile will be replaced
-* **.createprofile / .profilecreate**
+* **.deleteprofile / .profiledelete**
   * Type either command followed by a space, and your profile is deleted
 
 * **.showprofile / .profileshow**
