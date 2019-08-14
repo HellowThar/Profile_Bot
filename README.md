@@ -1,5 +1,6 @@
 ## Profile_Bot Basic use
-
+* **.profilehelp**
+  * Brings up this list of commands
 * **.createprofile / .profilecreate**
   * Type either command followed by a space, and your full profile that you'd like to set for yourself
   * Max character limit of 5000 characters by default - editable in models.py

@@ -42,11 +42,13 @@ async def show_profile(ctx, *, user):
 
 
 @client.command(aliases=['profilehelp'])
-async def show_profile(ctx):
+async def profile_help(ctx):
     embed = discord.Embed(color = discord.Color.blue())
     embed.add_field(
         name="Functions",
-        value=""".createprofile / .profilecreate profile
+        value="""Works best when you DM the bot directly
+        
+        .createprofile / .profilecreate profile
         example: .profilecreate This is a short blurb about my character
         
         .editprofile / .profileedit profile
@@ -59,7 +61,7 @@ async def show_profile(ctx):
         example: .profileshow Adam#1234""",
         inline='True'
     )
-    await ctx.send(embed=embed)    
+    await ctx.send(embed=embed)
     
 @client.event
 async def on_ready():
